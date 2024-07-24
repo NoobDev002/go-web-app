@@ -1,12 +1,12 @@
 name: PR Merged Notification
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 jobs:
   notify:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Print message for users
         run: echo "Thanks for contributing"
