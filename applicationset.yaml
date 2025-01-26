@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: pr-applications
+  namespace: argocd
+spec:
+  generators:
+    - pullRequest:
+        github:
+          owner: noobdev002
+          repo: go-web-app
+          tokenRef:
+            secretName: github-token
+            key: token
+  template:
+    metadata:
+      name: pr-{{ number }}
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/noobdev002/go-web-app
+        targetRevision: {{ branch }}
+        path: charts
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: pr-{{ number }}
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
